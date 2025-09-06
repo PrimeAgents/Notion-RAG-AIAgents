@@ -9,14 +9,13 @@ load_dotenv()
 
 id=os.getenv("id")
 api_key= os.getenv("api_key_gemini_v2")
-id_openai=os.getenv("id_openai")
-api_key_openai=os.getenv("api_key_openai")
+
 
 
 
 notion = Client(auth=os.getenv("NOTION_TOKEN"))
 def return_knowledge_base(agent, query, num_documents=None, **kwargs):
-    database_id = "22b39912667880579386e17d4f850272"
+    database_id = "your_database_id_here"  # Replace with your Notion database ID
 
     try:
         results = notion.databases.query(database_id=database_id)
@@ -86,8 +85,7 @@ def _compute_match_score(query_words, question, answer):
 
 # Set up agent
 agent = Agent(
-    # model=Gemini(id=id,api_key= api_key),
-    model=OpenAIChat(id=id_openai,api_key=api_key_openai),
+    model=Gemini(id=id,api_key= api_key),
     knowledge=None,
     search_knowledge=True,
     retriever=return_knowledge_base,
@@ -98,22 +96,3 @@ agent = Agent(
 prompt = input("Enter Your Prompt: ")
 agent.print_response(prompt)
 
-
-# ///////////////////////
-# import pandas as pd
-
-# # Load the full dataset
-# df = pd.read_csv(r"D:\Agno\11_Notion_RAG\QA_dataset.csv")
-
-# c = df.count()
-
-# print(c)
-
-# # # Randomly sample 200 rows
-# # df_sampled = df.sample(n=200, random_state=42)  # random_state for reproducibility
-
-# # # Overwrite the original CSV with the 200-line sample
-# # df_sampled.to_csv(r"D:\Agno\11_Notion_RAG\QA_dataset.csv", index=False)
-
-# # # Optional: print the new shape to confirm
-# # print(f"New dataset shape: {df_sampled.shape}")
